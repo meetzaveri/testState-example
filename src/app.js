@@ -1,28 +1,20 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { storeState } from "./storestate";
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
 
-  componentDidMount() {
-    console.log("this.props.stateToSupply", this.props.stateToSupply);
-  }
+const WrapperForTest = props => {
+  console.log("this.props.stateToSupply", props.stateToSupply);
+  const {
+    activateInitialRenderTrigger,
+    activateCustomTrigger,
+    comparisionStore,
+    stateToSupply,
+    children
+  } = props;
 
-  customMethod = () => {
-    console.log("custom method called");
-  };
+  if (activateInitialRenderTrigger === true || activateCustomTrigger === true)
+    storeState(stateToSupply, comparisionStore);
 
-  render() {
-    console.log("render called", this.props);
-    if (this.props.renderMethodTrigger === true)
-      storeState(this.props.stateToSupply);
+  return <Fragment>{children}</Fragment>;
+};
 
-    if (this.props.customMethodTrigger === true)
-      storeState(this.props.stateToSupply);
-    return <div>{this.props.children}</div>;
-  }
-}
-
-export default App;
+export default WrapperForTest;
