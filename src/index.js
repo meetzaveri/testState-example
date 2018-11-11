@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Frap from "./app";
+import StateTestWrapper from "./app";
 import Form from "./form";
 import "./styles.css";
 
@@ -8,9 +8,13 @@ class App extends React.Component {
   state = {
     counter: -1,
     flag: true,
-    initialRender: true,
+    activateInitialRenderTrigger: false,
     createUserInputEmail: "",
-    customMethodTrigger: false
+    activateCustomTrigger: false,
+    onFormSubmission: false,
+    finalName: null,
+    inputKeyToCompare: null,
+    stateKeyToCompare: null
   };
   componentDidMount() {
     setTimeout(() => {
@@ -26,24 +30,47 @@ class App extends React.Component {
     this.setState({ createUserInputEmail: e.target.value });
   };
   onSubmitForm = () => {
+    const { createUserInputEmail } = this.state;
     console.log("Submit form action");
-    this.setState({ customMethodTrigger: true });
+
+    this.setState({
+      activateCustomTrigger: true,
+      inputKeyToCompare: createUserInputEmail,
+      onFormSubmission: true,
+      finalName: createUserInputEmail,
+      createUserInputEmail: ""
+    });
   };
   render() {
     const { onHandleCreateUserInput, onSubmitForm } = this;
     const actions = { onHandleCreateUserInput, onSubmitForm };
-    const { customMethodTrigger } = this.state;
+    const {
+      activateCustomTrigger,
+      activateInitialRenderTrigger,
+      counter,
+      finalName,
+      onFormSubmission,
+      inputKeyToCompare
+    } = this.state;
+    const comparisionStore = {
+      _inputKey: "inputKeyToCompare",
+      _outputKey: "finalName"
+    };
     return (
       <div className="App">
         <button onClick={this.updateCounter}>Start clicking!</button>
-        <Frap
+        <StateTestWrapper
           stateToSupply={this.state}
-          renderMethodTrigger={false}
-          customMethodTrigger={customMethodTrigger}
+          activateInitialRenderTrigger={activateInitialRenderTrigger}
+          activateCustomTrigger={activateCustomTrigger}
+          comparisionStore={comparisionStore}
         >
-          <h2>Counter {this.state.counter}</h2>
+          <h2>Counter {counter}</h2>
           <Form state={this.state} actions={actions} />
-        </Frap>
+          <div>
+            Name after submission - {onFormSubmission ? finalName : null}
+          </div>
+        </StateTestWrapper>
       </div>
     );
   }
