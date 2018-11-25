@@ -8,6 +8,7 @@ class App extends React.Component {
   state = {
     counter: -1,
     flag: true,
+    isEnabled: true,
     activateInitialRenderTrigger: false,
     createUserInputEmail: "",
     activateCustomTrigger: false,
@@ -16,11 +17,13 @@ class App extends React.Component {
     inputKeyToCompare: null,
     stateKeyToCompare: null
   };
+
   componentDidMount() {
     setTimeout(() => {
       this.setState({ counter: 0 });
     }, 1000);
   }
+
   updateCounter = () => {
     let counter = this.state.counter;
     this.setState({ counter: counter + 1, initialRender: false });
@@ -35,7 +38,6 @@ class App extends React.Component {
 
     this.setState({
       activateCustomTrigger: true,
-      inputKeyToCompare: createUserInputEmail,
       onFormSubmission: true,
       finalName: createUserInputEmail,
       createUserInputEmail: ""
@@ -49,21 +51,22 @@ class App extends React.Component {
       activateInitialRenderTrigger,
       counter,
       finalName,
-      onFormSubmission,
-      inputKeyToCompare
+      onFormSubmission
     } = this.state;
     const comparisionStore = {
       _inputKey: "inputKeyToCompare",
-      _outputKey: "finalName"
+      _outputValue: "finalName"
     };
     return (
       <div className="App">
         <button onClick={this.updateCounter}>Start clicking!</button>
         <StateTestWrapper
           stateToSupply={this.state}
-          activateInitialRenderTrigger={activateInitialRenderTrigger}
-          activateCustomTrigger={activateCustomTrigger}
+          activateOnRender={activateInitialRenderTrigger}
+          activateOnCustomMethod={activateCustomTrigger}
           comparisionStore={comparisionStore}
+          diffStateKey="finalName"
+          getAffectedStateKeys={activateCustomTrigger}
         >
           <h2>Counter {counter}</h2>
           <Form state={this.state} actions={actions} />

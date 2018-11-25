@@ -1,18 +1,23 @@
 import React, { Fragment } from "react";
-import { storeState } from "./storestate";
+import { storeState, detectKeysChanged } from "./storestate";
 
 const WrapperForTest = props => {
-  console.log("this.props.stateToSupply", props.stateToSupply);
+  console.log("this.props.stateToSupply", props.stateToSupply, props);
   const {
-    activateInitialRenderTrigger,
-    activateCustomTrigger,
+    activateOnRender,
+    activateOnCustomMethod,
     comparisionStore,
     stateToSupply,
-    children
+    children,
+    diffStateKey,
+    getAffectedStateKeys
   } = props;
 
-  if (activateInitialRenderTrigger === true || activateCustomTrigger === true)
-    storeState(stateToSupply, comparisionStore);
+  storeState(stateToSupply, comparisionStore);
+
+  if (getAffectedStateKeys === true) {
+    detectKeysChanged();
+  }
 
   return <Fragment>{children}</Fragment>;
 };
