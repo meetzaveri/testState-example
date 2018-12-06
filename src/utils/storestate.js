@@ -1,31 +1,34 @@
 let stateHistoryArr = [];
 let stateBuffer = [];
 
-export function storeState(stateToGet, comparisionStore) {
-  console.log("stateToGet", stateToGet);
-  console.log("Updating state cycles", stateToGet, comparisionStore);
+export function storeState(suppliedState, comparisionStore) {
+  console.log("suppliedState", suppliedState);
+  console.log("Updating state cycles", suppliedState, comparisionStore);
   let temp = stateBuffer[0];
-  // console.log("temp", temp);
+  stateHistoryArr.push(suppliedState);
   stateBuffer[1] = temp;
-  stateBuffer[0] = stateToGet;
+  stateBuffer[0] = suppliedState;
   if (
-    stateToGet[comparisionStore._inputKey] ===
-    stateToGet[comparisionStore._outputKey]
+    suppliedState[comparisionStore._inputKey] ===
+    suppliedState[comparisionStore._outputKey]
   ) {
     console.log(
       "State key comparision successful",
-      stateToGet[comparisionStore._inputKey],
-      stateToGet[comparisionStore._outputKey]
+      suppliedState[comparisionStore._inputKey],
+      suppliedState[comparisionStore._outputKey]
     );
   }
 
   console.log("stateBuffer", stateBuffer);
 }
 
+export function getStateHistory() {
+  return stateHistoryArr;
+}
+
 export function detectKeysChanged() {
   let currentState = stateBuffer[0];
   let prevState = stateBuffer[1];
-
   let keys = Object.keys(currentState);
   let keysThatHaveChanged = [];
 
@@ -39,10 +42,10 @@ export function detectKeysChanged() {
   console.log("Keys that have changed", keysThatHaveChanged);
 }
 
-export function resetState(stateToGet, stateKeyToCompare) {
+export function resetState(suppliedState, stateKeyToCompare) {
   if (
-    stateToGet[stateKeyToCompare] === null ||
-    stateToGet[stateKeyToCompare] === ""
+    suppliedState[stateKeyToCompare] === null ||
+    suppliedState[stateKeyToCompare] === ""
   ) {
     console.log("resetState success");
   }
