@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { storeState, detectKeysChanged } from "./storestate";
+import { storeState, detectKeysChanged } from "./utils/storestate";
 
 const WrapperForTest = props => {
   console.log("this.props.stateToSupply", props.stateToSupply, props);

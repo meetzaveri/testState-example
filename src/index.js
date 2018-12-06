@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import StateTestWrapper from "./app";
-import Form from "./form";
+import Form from "./component/form";
 import "./styles.css";
 
 class App extends React.Component {
