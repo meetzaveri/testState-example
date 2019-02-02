@@ -49,4 +49,17 @@ export function resetState(suppliedState, stateKeyToCompare) {
   ) {
     console.log("resetState success");
   }
+  const key = suppliedState[stateKeyToCompare];
+  switch (key) {
+    case null:
+      return true;
+    case "":
+      return true;
+    case []:
+      return true;
+    case {}:
+      return true;
+    default:
+      return false;
+  }
 }
